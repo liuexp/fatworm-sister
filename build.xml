@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project default = "compile" basedir=".">
+
+  <property name="src.dir" value="src"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="bin.dir" value="bin"/>
+  <property name="dst.dir" value="dst"/>
+
+  <path id="classpath">
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="compile">
+    <mkdir dir="${bin.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${bin.dir}" nowarn="true">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="deploy" depends="compile">
+    <mkdir dir="${dst.dir}"/>
+    <jar jarfile="${dst.dir}/jdbctaste.jar" basedir="${bin.dir}">
+      <zipfileset includes="**/*.class" src="lib/log4j-1.2.17.jar"/>
+      <zipfileset includes="**/*.class" src="lib/commons-cli-1.2.jar"/>
+      <fileset includes="log4j.properties" dir="${basedir}"/>
+      <manifest>
+        <attribute name="Main-class" value="fatworm.sister.Launcher"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean">
+    <delete dir="${bin.dir}"/>
+    <delete dir="${dst.dir}"/>
+  </target>
+
+</project>
