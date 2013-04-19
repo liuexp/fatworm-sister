@@ -1,4 +1,4 @@
-package fatworm.sister.sqlcli;
+package fatworm.sister;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -13,9 +13,9 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
-public class FatwormSqlClient implements SqlClient {
+public class SqlClient {
 	
-	private static Logger logger = Logger.getLogger(FatwormSqlClient.class);
+	private static Logger logger = Logger.getLogger(SqlClient.class);
 
 	static {
 		try {
@@ -31,19 +31,19 @@ public class FatwormSqlClient implements SqlClient {
 
 	private PrintStream out;
 	
-	public FatwormSqlClient() {
+	public SqlClient() {
 		sb = new StringBuilder();
 		out = System.out;
 		conn = null;
 	}
 
-	@Override
 	public void appendLine(String line) {
-		sb.append(line);
 		if (endOfSql(line)) {
 			execute(sb.toString());
 			sb = new StringBuilder();
+			return;
 		}
+		sb.append(line);
 	}
 
 	private void execute(String str) {
@@ -67,14 +67,15 @@ public class FatwormSqlClient implements SqlClient {
 	private void outputOneRecord(ResultSet res, ResultSetMetaData schema)
 			throws SQLException {
 		StringBuilder sb = new StringBuilder();
+		sb.append("(");
 		for (int i = 1; i <= schema.getColumnCount(); ++i) {
 			if (i != 1)
-				sb.append(",");
+				sb.append(", ");
 			int type = schema.getColumnType(i);
 			Object o = res.getObject(i);
 			sb.append(getFieldString(o, type));
 		}
-		sb.append("\n");
+		sb.append(")");
 		out.println(sb.toString());
 	}
 
@@ -86,7 +87,7 @@ public class FatwormSqlClient implements SqlClient {
 			return ((Boolean)o).toString();
 		case java.sql.Types.CHAR:
 		case java.sql.Types.VARCHAR:
-			return (String)o;
+			return "'" + (String)o + "'";
 		case java.sql.Types.FLOAT:
 			return ((Float)o).toString();
 		case java.sql.Types.DATE:
@@ -102,10 +103,9 @@ public class FatwormSqlClient implements SqlClient {
 	}
 
 	private boolean endOfSql(String line) {
-		return line.endsWith(";");
+		return line.equals(";");
 	}
 
-	@Override
 	public void connect(String url) {
 		try {
 			conn = DriverManager.getConnection(url);
@@ -114,7 +114,6 @@ public class FatwormSqlClient implements SqlClient {
 		}
 	}
 
-	@Override
 	public void setOutput(String outputFile) {
 		try {
 		out = new PrintStream(outputFile);

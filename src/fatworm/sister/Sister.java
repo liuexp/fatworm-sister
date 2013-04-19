@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import fatworm.sister.cmd.Cmd;
-import fatworm.sister.sqlcli.SqlClient;
 
 public final class Sister {
 	
@@ -40,7 +39,7 @@ public final class Sister {
 	}
 	
 	public void start() {
-		includeNewFile(testName + File.separator + TESTSUIT_CONFIG_NAME);
+		includeNewFile(TESTSUIT_CONFIG_NAME);
 		mainLoop();
 	}
 	
@@ -53,8 +52,10 @@ public final class Sister {
 			if (Cmd.isCommand(line)) {
 				String cmdName = Cmd.stripCmdName(line);
 				Cmd cmd = cmdMap.get(cmdName);
-				if (cmd == null)
+				if (cmd == null) {
 					logger.error("Cannot find the command handler for " + cmdName);
+					continue;
+				}
 				cmd.execute();
 				continue;
 			}

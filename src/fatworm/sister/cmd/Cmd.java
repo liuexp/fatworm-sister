@@ -1,5 +1,6 @@
 package fatworm.sister.cmd;
 
+
 public abstract class Cmd {
 	
 	public static boolean isCommand(String str) {
