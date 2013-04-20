@@ -44,6 +44,7 @@ public class SqlClient {
 			return;
 		}
 		sb.append(line);
+		sb.append("\n");
 	}
 
 	private void execute(String str) {
