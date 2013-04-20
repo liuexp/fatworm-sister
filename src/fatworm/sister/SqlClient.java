@@ -43,7 +43,7 @@ public class SqlClient {
 			sb = new StringBuilder();
 			return;
 		}
-		sb.append(line);
+		sb.append(" "+line);
 	}
 
 	private void execute(String str) {
