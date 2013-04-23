@@ -25,13 +25,13 @@ public final class Sister {
 	
 	private final Map<String, Cmd> cmdMap;
 	
-	public final SqlClient client;
+	public final Client client;
 	
-	public Sister(String testName, SqlClient client) {
+	public Sister(String testName, Client client2) {
 		this.testName = testName;
 		this.fileStack = new Stack<BufferedReader>();
 		this.cmdMap = new TreeMap<String, Cmd>();
-		this.client = client;
+		this.client = client2;
 	}
 
 	public void registryCmd(Cmd cmd) {

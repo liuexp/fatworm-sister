@@ -71,7 +71,8 @@ public class Launcher {
 	}
 
 	private static void launch() {
-		SqlClient client = new SqlClient();
+		Client client = new SqlClient();
+		//Client client = new MysqlClient();
 		client.connect(url);
 		if (outputFile != null)
 			client.setOutput(outputFile);

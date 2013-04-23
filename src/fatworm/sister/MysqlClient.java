@@ -13,15 +13,19 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
-public class SqlClient implements Client {
-	
+public class MysqlClient implements Client {
 	private static Logger logger = Logger.getLogger(SqlClient.class);
-
 	static {
 		try {
-			Class.forName("fatworm.driver.Driver");
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -31,7 +35,7 @@ public class SqlClient implements Client {
 
 	private PrintStream out;
 	
-	public SqlClient() {
+	public MysqlClient() {
 		sb = new StringBuilder();
 		out = System.out;
 		conn = null;
@@ -79,8 +83,12 @@ public class SqlClient implements Client {
 			if (i != 1)
 				sb.append(", ");
 			int type = schema.getColumnType(i);
-			Object o = res.getObject(i);
-			sb.append(getFieldString(o, type));
+			if(type == java.sql.Types.INTEGER){
+				sb.append(""+res.getInt(i));
+			}else{
+				Object o = res.getObject(i);
+				sb.append(getFieldString(o, type));
+			}
 		}
 		sb.append(")");
 		out.println(sb.toString());
@@ -105,6 +113,8 @@ public class SqlClient implements Client {
 			return ((BigDecimal)o).toString();
 		case java.sql.Types.TIMESTAMP:
 			return ((java.sql.Timestamp)o).toString();
+		case java.sql.Types.BIGINT:
+			return ((Long)o).toString();
 		default:
 			logger.error("Undefined Type Number " + type);
 			return null;
@@ -117,7 +127,7 @@ public class SqlClient implements Client {
 
 	public void connect(String url) {
 		try {
-			conn = DriverManager.getConnection(url);
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/liuexp?user=liuexp&password=abcdefg");
 		} catch (SQLException e) {
 			logger.error(e);
 		}

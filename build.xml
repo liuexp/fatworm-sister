@@ -1,39 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<project default = "compile" basedir=".">
-
-  <property name="src.dir" value="src"/>
-  <property name="lib.dir" value="lib"/>
-  <property name="bin.dir" value="bin"/>
-  <property name="dst.dir" value="dst"/>
-
-  <path id="classpath">
-    <fileset dir="${lib.dir}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
-
-  <target name="compile">
-    <mkdir dir="${bin.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${bin.dir}" nowarn="true">
-      <classpath refid="classpath"/>
-    </javac>
-  </target>
-
-  <target name="deploy" depends="compile">
-    <mkdir dir="${dst.dir}"/>
-    <jar jarfile="${dst.dir}/jdbctaste.jar" basedir="${bin.dir}">
-      <zipfileset includes="**/*.class" src="lib/log4j-1.2.17.jar"/>
-      <zipfileset includes="**/*.class" src="lib/commons-cli-1.2.jar"/>
-      <fileset includes="log4j.properties" dir="${basedir}"/>
-      <manifest>
-        <attribute name="Main-class" value="fatworm.sister.Launcher"/>
-      </manifest>
-    </jar>
-  </target>
-
-  <target name="clean">
-    <delete dir="${bin.dir}"/>
-    <delete dir="${dst.dir}"/>
-  </target>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project fatworm-sister">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/home/liuexp/projects/fatworm-sister/z.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="fatworm.sister.Launcher"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="/home/liuexp/projects/fatworm-sister/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/liuexp/projects/fatworm-sister/lib/commons-cli-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/liuexp/projects/fatworm-sister/lib/log4j-1.2.17.jar"/>
+            <fileset dir="/home/liuexp/projects/fatworm/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/usr/share/java/antlr-3.5-complete.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/home/liuexp/projects/fatworm-sister/lib/mysql-connector-java-5.1.24-bin.jar"/>
+        </jar>
+    </target>
 </project>
