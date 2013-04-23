@@ -52,6 +52,12 @@ public class SqlClient {
 			Statement stat = conn.createStatement();
 			stat.execute(str);
 			ResultSet res = stat.getResultSet();
+			
+			System.out.println(str);
+			
+			if (res == null || res.getMetaData() == null)
+				return;
+			
 			displayResultSet(res);
 		} catch (SQLException e) {
 			logger.error(e);
@@ -81,6 +87,8 @@ public class SqlClient {
 	}
 
 	private String getFieldString(Object o, int type) {
+		if (o == null)
+			return "null";
 		switch (type) {
 		case java.sql.Types.INTEGER:
 			return ((Integer)o).toString();
