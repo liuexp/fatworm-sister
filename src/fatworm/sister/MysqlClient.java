@@ -63,6 +63,7 @@ public class MysqlClient implements Client {
 				return;
 			
 			displayResultSet(res);
+			res.close();
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -140,4 +141,12 @@ public class MysqlClient implements Client {
 			logger.error(e);
 		}
 	}
+	public void disconnect() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+	}
+
 }

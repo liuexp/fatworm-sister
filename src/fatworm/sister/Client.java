@@ -8,4 +8,6 @@ public interface Client {
 
 	public void appendLine(String line);
 
+	public void disconnect();
+
 }
