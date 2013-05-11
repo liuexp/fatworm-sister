@@ -59,6 +59,7 @@ public class SqlClient {
 				return;
 			
 			displayResultSet(res);
+			res.close();
 		} catch (SQLException e) {
 			logger.error(e);
 		}
