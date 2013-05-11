@@ -59,6 +59,7 @@ public class SqlClient implements Client {
 				return;
 			
 			displayResultSet(res);
+			res.close();
 		} catch (SQLException e) {
 			logger.error(e);
 		}
