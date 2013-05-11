@@ -79,6 +79,7 @@ public class Launcher {
 		Sister sis = new Sister(testName, client);
 		registerCommands(sis);
 		sis.start();
+		client.disconnect();
 	}
 
 	private static void registerCommands(Sister sis) {

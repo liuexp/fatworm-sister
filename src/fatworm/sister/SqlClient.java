@@ -131,4 +131,12 @@ public class SqlClient {
 			logger.error(e);
 		}
 	}
+
+	public void disconnect() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+	}
 }
